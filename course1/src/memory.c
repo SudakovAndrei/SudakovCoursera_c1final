@@ -48,3 +48,110 @@ void clear_all(char * ptr, unsigned int size){
   set_all(ptr, 0, size);
 }
 
+uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length){
+  unsigned int i;
+  uint8_t * buf;
+  /* Allocate memory for buffer */
+  buf = (uint8_t *)malloc(length*sizeof(uint8_t));
+  for(i = 0; i < length; i++) {
+    /* Move data from src to dst through buffer */
+    *buf = *src;
+    *dst = *buf;
+    /* Increment pointers */
+    src ++;
+    dst ++;
+    buf ++;
+  }
+  /* Free memory and return dst pounter */
+  free (buf);
+  return (dst);
+}
+
+uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length){
+  unsigned int i;
+
+  for(i = 0; i < length; i++) {
+    /* Copy data from src to dst */
+    *dst = *src;
+    /* Increment pointers */
+    src ++;
+    dst ++;
+  }
+  /* Return dst pounter */
+  return (dst);
+}
+
+uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value){
+  unsigned int i;
+
+  for(i = 0; i < length; i++) {
+    /* Set to value */
+    *src = value;
+    /* Increment pointer */
+    src ++;
+  }
+  /* Return src pounter */
+  return (src);
+}
+
+uint8_t * my_memzero(uint8_t * src, size_t length){
+  unsigned int i;
+
+  for(i = 0; i < length; i++) {
+    /* Set to zero */
+    *src = NULL;
+    /* Increment pointer */
+    src ++;
+  }
+  /* Return src pounter */
+  return (src);
+}
+
+uint8_t * my_reverse(uint8_t * src, size_t length){
+  unsigned int i;
+  uint8_t * buf;
+
+  /* Allocate memory for buffer */
+  buf = (uint8_t *)malloc(length*sizeof(uint8_t));
+  /* Set src pointer to end of allocation */
+  src += length;
+  for(i = 0; i < length; i++) {
+    /* Copy src to buf in reverse order */
+    *buf = *src;
+    /* Decrement src and increment buf pointers */
+    src --;
+    buf ++;
+  }
+  /* Set buf pointer to begin of allocation */
+  buf -= length;
+  for(i = 0; i < length; i++) {
+    /* Copy data from buffer to src */
+    *src = *buf;
+    /* Increment pointers */
+    src ++;
+    buf ++;
+  }
+  /* Free memory and return src pounter */
+  free (buf);
+  return (src);
+}
+
+int32_t * reserve_words(size_t length){
+  uint8_t * buf;
+  /* Allocate memory for buffer */
+  buf = malloc(length*sizeof(int32_t));
+  if (buf == NULL) {
+    /* if not allocated return Null pointer */
+    return (NULL);
+  }
+  else {
+    /* if allocated return pointer to memory*/
+    return ((int32_t *)buf);
+  }
+}
+
+void free_words(int32_t * src){
+  /* Free memory from src allocation */
+  free (src);
+}
+
