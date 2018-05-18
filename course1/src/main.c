@@ -1,27 +1,25 @@
 /******************************************************************************
- * Copyright (C) 2017 by Alex Fosdick - University of Colorado
+ * Copyright (C) 2018 by Andrei Sudakov - AO PKK MILANDR
  *
  * Redistribution, modification or use of this software in source or binary
  * forms is permitted as long as the files maintain this copyright. Users are 
  * permitted to modify this and use it to learn about the field of embedded
- * software. Alex Fosdick and the University of Colorado are not liable for any
+ * software. Andrei Sudakov and the AO PKK MILANDR are not liable for any
  * misuse of this material. 
  *
  *****************************************************************************/
 /**
  * @file main.c
- * @brief Main entry point to the C1M2 Assessment
+ * @brief Main function.
  *
- * This file contains the main code for the C1M2 assesment. Students
- * are not to change any of the code, they are instead supposed to compile
- * these files with their makefile.
+ * This implementation file provides a run of course1 function. 
  *
- * @author Alex Fosdick
- * @date April 1 2017
+ * @author Andrei Sudakov
+ * @date May 17 2018
  *
  */
+
 #include "platform.h"
-#include "memory.h"
 #include "course1.h"
 
 /* A pretty boring main file */
