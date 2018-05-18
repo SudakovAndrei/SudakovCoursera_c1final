@@ -19,7 +19,7 @@
  * @date May 17 2018
  *
  */
-#include "memory.h"
+#include "data.h"
 
 #define MAX_STRING_LENGTH	32
 
