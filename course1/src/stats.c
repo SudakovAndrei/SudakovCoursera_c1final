@@ -25,31 +25,6 @@
 #include <stdio.h>
 #include "stats.h"
 
-/* Size of the Data Set */
-#define SIZE (40)
-
-int main(void) {
-  unsigned char test[SIZE] = { 34, 201, 190, 154,   8, 194,   2,   6,
-                              114, 88,   45,  76, 123,  87,  25,  23,
-                              200, 122, 150, 90,   92,  87, 177, 244,
-                              201,   6,  12,  60,   8,   2,   5,  67,
-                                7,  87, 250, 230,  99,   3, 100,  90};
-unsigned char sorted_test[SIZE];
-int i;
-
-  printf("Print array values unsorted\n");
-  print_array(test, SIZE);
-  printf("Print array values after sort\n");
-  for ( i=0; i < SIZE; i++){
-    sorted_test[i] = test[i];
-  }
-  sort_array(sorted_test, SIZE); 
-  print_array(sorted_test, SIZE);
-  printf("Print statistic values of an array \n");
-  print_statistics(test, SIZE);
-  
-  return 0;
-}
 unsigned char find_maximum(unsigned char * ptr, unsigned int size) {
 unsigned int i;
 unsigned char found_max=0; /* Set to minimum value*/
