@@ -29,15 +29,16 @@
 #
 #------------------------------------------------------------------------------
 PLATFORM = HOST
-
+COURSE = COURSE1
+PRINT = VERBOSE 
 include sources.mk
-BASENAME = c1m2
+BASENAME = course1
 
 # Architectures Specific Flags
 CPU = cortex-m4
 ARCH = thumb
 SPECS = nosys.specs
-LINKER_FILE = ../msp432p401r.lds
+LINKER_FILE = msp432p401r.lds
 
 # Compiler Flags and Defines
 ifeq ($(PLATFORM),HOST)
@@ -59,19 +60,15 @@ else
 endif
  
 LD= arm-none-eabi-ld
-CPPFLAGs= -MD -D$(PLATFORM)
+CPPFLAGs= -MD -D$(PLATFORM) -D$(PRINT) -D$(COURSE)
 
-OBJS = $(SOURCES:.c=.o)
-PREPS = $(SOURCES:.c=.i)
-ASMS = $(SOURCES:.c=.asm)
-
-%.o : %.c
+%.o : src/%.c
 	$(CC) -c $< $(CFLAGS) $(CPPFLAGs) $(INCLUDES) -o $@
 
-%.i : %.c
+%.i : src/%.c
 	$(CC) -E $(CPPFLAGs) $(INCLUDES) -o $@ $<
 
-%.asm : %.c
+%.asm : src/%.c
 	$(CC) -S $(CFLAGS) $(CPPFLAGs) $(INCLUDES) -o $@ $<
 
 $(BASENAME).asm: $(BASENAME).out
@@ -84,7 +81,7 @@ compile-all:
 .PHONY: build
 build: $(BASENAME).out
 $(BASENAME).out : $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) $(CPPFLAGs) $(INCLUDES) $(LDFLAGS) -o $@
+	$(CC) $(SOURCES) $(CFLAGS) $(CPPFLAGs) $(INCLUDES) $(LDFLAGS) -o $@
 	$(SIZE) -Atd $@
 
 .PHONY: clean
