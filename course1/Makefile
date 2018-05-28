@@ -12,7 +12,7 @@
 #------------------------------------------------------------------------------
 # <Put a Description Here>
 #
-# Use: make [TARGET] [PLATFORM-OVERRIDES]
+# Use: make [TARGET] [COURSE] [PRINT] [PLATFORM-OVERRIDES]
 #
 # Build Targets:
 #	<FILE.i> - Builds <FILE.i> preprocessed output file
@@ -26,11 +26,14 @@
 #
 # Platform Overrides:
 #	PLATFORM - Type of platform (HOST - native, MSP432 - MCU)
+#	COURSE   - Switch deliverable function to call (COURSE1 - course1.c, Other #                  values - no functions to call)
+#	PRINT    - Define behavior of print_array func (VERBOSE - print as normal,
+#                  Other values - nothing should print)
 #
 #------------------------------------------------------------------------------
 PLATFORM = HOST
 COURSE = COURSE1
-PRINT = VERBOSE 
+PRINT = NONE
 include sources.mk
 BASENAME = course1
 
