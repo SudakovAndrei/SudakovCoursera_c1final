@@ -21,6 +21,12 @@
 #ifndef __COURSE1_H__
 #define __COURSE1_H__
 
+#include <stdint.h>
+#include "memory.h"
+#include "data.h"
+#include "stats.h"
+#include "platform.h"
+
 /**
  * @brief Call a handful of functions and test function outputs. 
  *

@@ -22,6 +22,9 @@
 #ifndef __STATS_H__
 #define __STATS_H__
 
+#include <stdio.h>
+#include "platform.h"
+
 /**
  * @brief Find maximum value of an array
  *

@@ -22,6 +22,10 @@
 #ifndef __DATA_H__
 #define __DATA_H__
 
+#include <stdint.h>
+#include <stdlib.h>
+
+#define MAX_STRING_LENGTH	32
 /**
  * @brief Convert data from a standard integer type into an ASCII string. 
  *
