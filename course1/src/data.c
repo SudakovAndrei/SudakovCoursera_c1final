@@ -27,7 +27,7 @@ uint8_t my_itoa(int32_t data, uint8_t * ptr, uint32_t base){
   char * result_str;
   int sign=0;
   int digit;
-  int length_str = 0;
+  uint8_t length_str = 0;
   
   /* Allocate memory for result string */
   result_str = (char *)malloc(MAX_STRING_LENGTH*sizeof(char));
