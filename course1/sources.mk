@@ -9,18 +9,38 @@
 #
 #*****************************************************************************
 ifeq ($(PLATFORM),HOST)
-SOURCES = 	main.c \
-	  	memory.c
-INCLUDES=	-I../include/common
+SOURCES = 	src/main.c \
+	  	src/course1.c \
+	  	src/stats.c \
+	  	src/memory.c \
+	  	src/data.c
+OBJS = 		main.o \
+	  	course1.o \
+	  	stats.o \
+	  	memory.o \
+	  	data.o
+
+INCLUDES=	-Iinclude/common
 else ifeq ($(PLATFORM),MSP432)
-SOURCES=	main.c \
-		memory.c \
-		interrupts_msp432p401r_gcc.c \
-		startup_msp432p401r_gcc.c \
-		system_msp432p401r.c
-INCLUDES=	-I../include/CMSIS \
-		-I../include/msp432 \
-		-I../include/common
+SOURCES=	src/main.c \
+	  	src/course1.c \
+	  	src/stats.c \
+	  	src/memory.c \
+	  	src/data.c \
+		src/interrupts_msp432p401r_gcc.c \
+		src/startup_msp432p401r_gcc.c \
+		src/system_msp432p401r.c
+INCLUDES=	-Iinclude/CMSIS \
+		-Iinclude/msp432 \
+		-Iinclude/common
+OBJS = 		main.o \
+	  	course1.o \
+	  	stats.o \
+	  	memory.o \
+	  	data.o \
+		interrupts_msp432p401r_gcc.o \
+		startup_msp432p401r_gcc.o \
+		system_msp432p401r.o
 else
   $(error Unsupported platform: $(PLATFORM))
 endif
