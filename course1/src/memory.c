@@ -49,33 +49,38 @@ void clear_all(char * ptr, unsigned int size){
 }
 
 uint8_t * my_memmove(uint8_t * src, uint8_t * dst, size_t length){
-  unsigned int i;
-  uint8_t * buf;
-  /* Allocate memory for buffer */
-  buf = (uint8_t *)malloc(length*sizeof(uint8_t));
-  for(i = 0; i < length; i++) {
-    /* Move data from src to dst through buffer */
-    *buf = *src;
-    *dst = *buf;
-    /* Increment pointers */
-    src ++;
-    dst ++;
-    buf ++;
+  uint8_t * sour = src;
+  uint8_t * dest = dst;
+  
+  /* If non-overlapped copy from begin of allocations */
+  if (dest <= sour || dest >= (sour + length)){
+    while (length--){
+      /* Copy and increment pointers */ 
+      *dest++ = *sour++;
+    }
   }
-  /* Free memory and return dst pounter */
-  free (buf);
+  /* If overlapped copy from end of allocations */
+  else{
+    /* Set pounter to end of allocations*/
+    dest += length - 1;
+    sour += length - 1;
+    while (length--){
+      /* Copy and decrement pointers */
+      *dest-- = *sour--;
+    } 
+  }
+  /* Return dst pounter */
   return (dst);
 }
 
 uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length){
   unsigned int i;
+  uint8_t * sour = src;
+  uint8_t * dest = dst;
 
   for(i = 0; i < length; i++) {
-    /* Copy data from src to dst */
-    *dst = *src;
-    /* Increment pointers */
-    src ++;
-    dst ++;
+    /* Copy data and icrement pointers */
+    *dest++ = *sour++;
   }
   /* Return dst pounter */
   return (dst);
@@ -83,12 +88,13 @@ uint8_t * my_memcopy(uint8_t * src, uint8_t * dst, size_t length){
 
 uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value){
   unsigned int i;
+  uint8_t * sour = src;
 
   for(i = 0; i < length; i++) {
     /* Set to value */
-    *src = value;
+    *sour = value;
     /* Increment pointer */
-    src ++;
+    sour ++;
   }
   /* Return src pounter */
   return (src);
@@ -96,50 +102,47 @@ uint8_t * my_memset(uint8_t * src, size_t length, uint8_t value){
 
 uint8_t * my_memzero(uint8_t * src, size_t length){
   unsigned int i;
+  uint8_t * sour = src;
 
-  for(i = 0; i < length; i++) {
+  for(i = 0; i < length; i++){
     /* Set to zero */
-    *src = NULL;
+    *sour = '\0';
     /* Increment pointer */
-    src ++;
+    sour ++;
   }
   /* Return src pounter */
   return (src);
 }
 
 uint8_t * my_reverse(uint8_t * src, size_t length){
-  unsigned int i;
-  uint8_t * buf;
+  uint8_t temp;
+  uint8_t *start_ptr = src;
+  uint8_t *end_ptr = src + length-1;
 
-  /* Allocate memory for buffer */
-  buf = (uint8_t *)malloc(length*sizeof(uint8_t));
-  /* Set src pointer to end of allocation */
-  src += length;
-  for(i = 0; i < length; i++) {
-    /* Copy src to buf in reverse order */
-    *buf = *src;
-    /* Decrement src and increment buf pointers */
-    src --;
-    buf ++;
+  if(start_ptr == NULL){
+    /* if Null pointer return */
+    return (src);
   }
-  /* Set buf pointer to begin of allocation */
-  buf -= length;
-  for(i = 0; i < length; i++) {
-    /* Copy data from buffer to src */
-    *src = *buf;
-    /* Increment pointers */
-    src ++;
-    buf ++;
+  else
+  {
+    /* reverse untill end_ptr > start_ptr */
+    while(end_ptr > start_ptr){
+      /* Save value from left side of array */
+      temp = *start_ptr;
+      /* Move value from rigth side of array to left */
+      *start_ptr++ = *end_ptr;
+      /* Move value from temp to rigth side of array */
+      *end_ptr-- = temp;
+    }
   }
-  /* Free memory and return src pounter */
-  free (buf);
+  /* Return src pounter */
   return (src);
 }
 
 int32_t * reserve_words(size_t length){
-  uint8_t * buf;
+  int32_t * buf;
   /* Allocate memory for buffer */
-  buf = malloc(length*sizeof(int32_t));
+  buf = (int32_t *)malloc(length*sizeof(int32_t));
   if (buf == NULL) {
     /* if not allocated return Null pointer */
     return (NULL);

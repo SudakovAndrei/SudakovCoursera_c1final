@@ -20,17 +20,27 @@
  */
 
 #include "course1.h"
-#include "memory.h"
-#include "data.h"
-#include "stats.h"
+
+int32_t test_number = 123456789;
+uint8_t array1[32];
+uint8_t array2[32];
 
 #define	src_str_size		(16)
 #define	overlap_str_size	(8)
 uint8_t src_str[src_str_size] = 	{ 201,   6,  12,  60,   8,   2,   5,  67,
                                   	    7,  87, 250, 230,  99,   3, 100,  90};
-uint8_t dst_str[src_str_size] = 	{   1,   2,   3,   4,   5,   6,   7,   8,
+uint8_t dst_str1[src_str_size] = 	{   1,   2,   3,   4,   5,   6,   7,   8,
                                    	    9,  10,  11,  12,  13,  14,  15,  16};
-uint8_t overlap_str[overlap_str_size] = {   4,   5,   6,   7,   8,   9,  10,  11};
+uint8_t dst_str2[src_str_size] = 	{   1,   2,   3,   4,   5,   6,   7,   8,
+                                   	    9,  10,  11,  12,  13,  14,  15,  16};
+uint8_t dst_str3[src_str_size] = 	{   1,   2,   3,   4,   5,   6,   7,   8,
+                                   	    9,  10,  11,  12,  13,  14,  15,  16};
+uint8_t dst_str4[src_str_size] = 	{   1,   2,   3,   4,   5,   6,   7,   8,
+                                   	    9,  10,  11,  12,  13,  14,  15,  16};
+
+uint8_t overlap_str[overlap_str_size] = {   5,   6,   7,   8,   9,   10,  11,  12};
+
+#define memset_test_value	(19)
 
 #define	str_even_size		(8)
 uint8_t str_even[8] = 			{  45,  98,  71,   2,  37,  62, 123, 205};
@@ -40,54 +50,93 @@ uint8_t str_odd[str_odd_size] = 	{ 200, 122, 150,  90,  92,  87, 177};
 uint8_t reverse_str_odd[str_odd_size] = { 177,  87,  92,  90, 150, 122, 200};
 
 int8_t course1(void){
-  
-  test_data1();
-  test_data2();
-  test_memmove1();
-  test_memmove2();
-  test_memmove3();
-  test_memcopy();
-  test_memset();
-  test_reverse();
+int8_t result=0; 
+int8_t err_code=0;
 
+  err_code = test_data1();
+  if (err_code){
+    result |= 1 << 0;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }
+  err_code = test_data2();
+  if (err_code){
+    result |= 1 << 1;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }
+  err_code = test_memmove1();
+  if (err_code){
+    result |= 1 << 2;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }
+  err_code = test_memmove2();
+  if (err_code){
+    result |= 1 << 3;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }
+  err_code = test_memmove3();
+  if (err_code){
+    result |= 1 << 4;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }  
+  err_code = test_memcopy();
+  if (err_code){
+    result |= 1 << 5;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }
+  err_code = test_memset();
+  if (err_code){
+    result |= 1 << 6;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }
+  err_code = test_reverse(); 
+  if (err_code){
+    result |= 1 << 7;
+    PRINTF("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Error code = 0x%x\n",err_code);
+  }
+  
+  if (result == 0){
+    PRINTF("!!!!!!!!!!!!!!!! All functions tested successfully !!!!!!!!!!!!!!!!!\n");
+  } 
+    
+  return(0);
 }
 
 int8_t test_data1(void){
   int8_t Error = 0;
   int32_t i;
-  uint8_t length_str;
-  uint8_t *ptr;
-  int32_t res_int;
+  uint8_t length_str=0;
+  int32_t res_int=0;
 
-  ptr = (uint8_t *)malloc(MAX_STRING_LENGTH*sizeof(uint8_t));
-  PRINTF("Test my_itoa and my atoi functions \n");
+  PRINTF("**************** Test my_itoa and my atoi functions ****************\n");
   for (i = 2; i <= 16; i ++ ){
-    length_str = my_itoa(1234, ptr, i);
-    PRINTF("Number 1234 in base=%d is %s \n", i, ptr);
+    length_str = my_itoa(test_number, array1, i);
+    PRINTF("Number %d in base=%d is %s \n", test_number, i, array1);
     PRINTF("Length of result string is %d \n", length_str);
-    res_int = my_atoi(ptr, length_str, i);
-    PRINTF("Result of my_atoi is %d \n", length_str);
-    if (res_int != 1234){
+    res_int = my_atoi(array1, length_str, i);
+    PRINTF("Result of my_atoi is %d \n", res_int);
+    if (res_int != test_number){
       Error |= 1 << i;
     }
+    PRINTF("--------------------------------------------------------------------\n");
   }
 
   for (i = 2; i <= 16; i ++ ){
-    length_str = my_itoa(-1234, ptr, i);
-    PRINTF("Number -1234 in base=%d is %s \n", i, ptr);
+    length_str = my_itoa(-1*test_number, array1, i);
+    PRINTF("Number %d in base=%d is %s \n", -1*test_number, i, array1);
     PRINTF("Length of result string is %d \n", length_str);
-    res_int = my_atoi(ptr, length_str, i);
+    res_int = my_atoi(array1, length_str, i);
     PRINTF("Result of my_atoi is %d \n", res_int);
-    if (res_int != -1234){
+    if (res_int != -1*test_number){
       Error |= 1 << (i+16);
     }
+    PRINTF("--------------------------------------------------------------------\n");
   }
   
   if (Error == 0){ 
-    PRINTF("Test my_itoa and my atoi functions pass\n");
+    PRINTF("************* Test my_itoa and my atoi functions pass **************\n");
   }
   else{
-    PRINTF("Test my_itoa and my atoi functions fail\n");
+    PRINTF("************* Test my_itoa and my atoi functions fail **************\n");
   }
   return (Error);
 }
@@ -96,29 +145,29 @@ int8_t test_data2(void){
   int8_t Error = 0;
   int32_t i;
   uint8_t length_str;
-  uint8_t *ptr;
   int32_t test_int = 1;
+  int32_t res_int;
 
-  ptr = (uint8_t *)malloc(MAX_STRING_LENGTH*sizeof(uint8_t));
-  PRINTF("Test my_itoa and my atoi functions \n");
+  PRINTF("**************** Test my_itoa and my atoi functions ****************\n");
 
   for (i = 1; i <= 31; i ++ ){
     test_int = test_int * 2;
-    length_str = my_itoa(test_int-1, ptr, 2);
-    PRINTF("Number %d in base=%d is %s \n", test_int, 2, ptr);
+    length_str = my_itoa(test_int - 1, array2, 2);
+    PRINTF("Number %d in base=%d is %s \n", test_int - 1, 2, array2);
     PRINTF("Length of result string is %d \n", length_str);
-    res_int = my_atoi(ptr, length_str, 2);
+    res_int = my_atoi(array2, length_str, 2);
     PRINTF("Result of my_atoi is %d \n", res_int);
-    if (res_int != test_int || length_str != i){
+    if (res_int != (test_int - 1) || length_str != i){
       Error |= 1 << i;
     }
+    PRINTF("--------------------------------------------------------------------\n");
   }
 
   if (Error == 0){ 
-    PRINTF("Test my_itoa and my atoi functions pass\n");
+    PRINTF("************* Test my_itoa and my atoi functions pass **************\n");
   }
   else{
-    PRINTF("Test my_itoa and my atoi functions fail\n");
+    PRINTF("************* Test my_itoa and my atoi functions fail **************\n");
   }
   return (Error);
 }
@@ -126,20 +175,22 @@ int8_t test_data2(void){
 int8_t test_memmove1(void){
   int8_t Error = 0;
   uint8_t * dst_str_out;
-  PRINTF("Test my_memmove function (non-overlapped)\n");
+  int32_t i;
+
+  PRINTF("************ Test my_memmove function (non-overlapped) *************\n");
   PRINTF("Source string:\n");
-  print_array(src_str, str_size);
+  print_array(src_str, src_str_size);
   PRINTF("Destination string:\n");
-  print_array(dst_str, str_size);
-  dst_str_out = my_memmove(src_str, dst_str, str_size);
+  print_array(dst_str1, src_str_size);
+  dst_str_out = my_memmove(src_str, dst_str1, src_str_size);
   PRINTF("Source string after my_memmove:\n");
-  print_array(src_str, str_size);
+  print_array(src_str, src_str_size);
   PRINTF("Destination string after my_memmove (input parameter):\n");
-  print_array(dst_str, str_size);
+  print_array(dst_str1, src_str_size);
   PRINTF("Destination string after my_memmove (output value):\n");
-  print_array(dst_str_out, str_size);
-  for (i = 0; i < str_size; i++){
-    if (src_str[i] != dst_str[i]){
+  print_array(dst_str_out, src_str_size);
+  for (i = 0; i < src_str_size; i++){
+    if (src_str[i] != dst_str1[i]){
       Error |= 1 << 0;
     }
     if (src_str[i] != dst_str_out[i]){
@@ -147,10 +198,10 @@ int8_t test_memmove1(void){
     }
   }
   if (Error == 0){ 
-    PRINTF("Test my_memmove function (non-overlapped) pass\n");
+    PRINTF("********** Test my_memmove function (non-overlapped) pass **********\n");
   }
   else{
-    PRINTF("Test my_memmove function (non-overlapped) fail\n");
+    PRINTF("********** Test my_memmove function (non-overlapped) fail **********\n");
   }
   return (Error);
 }
@@ -158,20 +209,22 @@ int8_t test_memmove1(void){
 int8_t test_memmove2(void){
   int8_t Error = 0;
   uint8_t * dst_str_out;
-  PRINTF("Test my_memmove function (overlapped)\n");
+  int32_t i;
+
+  PRINTF("************** Test my_memmove function (overlapped) ***************\n");
   PRINTF("Source string:\n");
-  print_array(dst_str[4], overlap_str_size);
+  print_array(dst_str2+4, overlap_str_size);
   PRINTF("Destination string:\n");
-  print_array(dst_str[0], overlap_str_size);
-  dst_str_out = my_memmove(dst_str[4], dst_str[0], overlap_str_size);
+  print_array(dst_str2+0, overlap_str_size);
+  dst_str_out = my_memmove(dst_str2+4, dst_str2+0, overlap_str_size);
   PRINTF("Source string after my_memmove:\n");
-  print_array(dst_str[4], overlap_str_size);
+  print_array(dst_str2+4, overlap_str_size);
   PRINTF("Destination string after my_memmove (input parameter):\n");
-  print_array(dst_str[0], overlap_str_size);
+  print_array(dst_str2+0, overlap_str_size);
   PRINTF("Destination string after my_memmove (output value):\n");
   print_array(dst_str_out, overlap_str_size);
   for (i = 0; i < overlap_str_size; i++){
-    if (dst_str[i] != overlap_str_1[i]){
+    if (dst_str2[i] != overlap_str[i]){
       Error |= 1 << 0;
     }
     if (dst_str_out[i] != overlap_str[i]){
@@ -179,10 +232,10 @@ int8_t test_memmove2(void){
     }
   }
   if (Error == 0){ 
-    PRINTF("Test my_memmove function (overlapped) pass\n");
+    PRINTF("************ Test my_memmove function (overlapped) pass ************\n");
   }
   else{
-    PRINTF("Test my_memmove function (overlapped) fail\n");
+    PRINTF("************ Test my_memmove function (overlapped) fail ************\n");
   }
   return (Error);
 }
@@ -190,20 +243,22 @@ int8_t test_memmove2(void){
 int8_t test_memmove3(void){
   int8_t Error = 0;
   uint8_t * dst_str_out;
-  PRINTF("Test my_memmove function (overlapped)\n");
+  int32_t i;
+
+  PRINTF("************** Test my_memmove function (overlapped) ***************\n");
   PRINTF("Source string:\n");
-  print_array(dst_str[4], overlap_str_size);
+  print_array(&dst_str3[4], overlap_str_size);
   PRINTF("Destination string:\n");
-  print_array(dst_str[8], overlap_str_size);
-  dst_str_out = my_memmove(dst_str[4], dst_str[8], overlap_str_size);
+  print_array(&dst_str3[8], overlap_str_size);
+  dst_str_out = my_memmove(&dst_str3[4], &dst_str3[8], overlap_str_size);
   PRINTF("Source string after my_memmove:\n");
-  print_array(dst_str[4], overlap_str_size);
+  print_array(&dst_str3[4], overlap_str_size);
   PRINTF("Destination string after my_memmove (input parameter):\n");
-  print_array(dst_str[8], overlap_str_size);
+  print_array(&dst_str3[8], overlap_str_size);
   PRINTF("Destination string after my_memmove (output value):\n");
   print_array(dst_str_out, overlap_str_size);
   for (i = 0; i < overlap_str_size; i++){
-    if (dst_str[8+i] != overlap_str_2[i]){
+    if (dst_str3[8+i] != overlap_str[i]){
       Error |= 1 << 0;
     }
     if (dst_str_out[i] != overlap_str[i]){
@@ -211,10 +266,10 @@ int8_t test_memmove3(void){
     }
   }
   if (Error == 0){ 
-    PRINTF("Test my_memmove function (overlapped) pass\n");
+    PRINTF("************ Test my_memmove function (overlapped) pass ************\n");
   }
   else{
-    PRINTF("Test my_memmove function (overlapped) fail\n");
+    PRINTF("************ Test my_memmove function (overlapped) fail ************\n");
   }
   return (Error);
 }
@@ -222,20 +277,22 @@ int8_t test_memmove3(void){
 int8_t test_memcopy(void){
   int8_t Error = 0;
   uint8_t * dst_str_out;
-  PRINTF("Test my_memcopy function\n");
+  int32_t i;
+
+  PRINTF("********************* Test my_memcopy function *********************\n");
   PRINTF("Source string:\n");
-  print_array(src_str, str_size);
+  print_array(src_str, src_str_size);
   PRINTF("Destination string:\n");
-  print_array(dst_str, str_size);
-  dst_str_out = my_memcopy(src_str, dst_str, str_size);
+  print_array(dst_str4, src_str_size);
+  dst_str_out = my_memcopy(src_str, dst_str4, src_str_size);
   PRINTF("Source string after memcopy:\n");
-  print_array(src_str, str_size);
+  print_array(src_str, src_str_size);
   PRINTF("Destination string after memcopy (input parameter):\n");
-  print_array(dst_str, str_size);
+  print_array(dst_str4, src_str_size);
   PRINTF("Destination string after memcopy (output value):\n");
-  print_array(dst_str_out, str_size);
-  for (i = 0; i < str_size; i++){
-    if (src_str[i] != dst_str[i]){
+  print_array(dst_str_out, src_str_size);
+  for (i = 0; i < src_str_size; i++){
+    if (src_str[i] != dst_str4[i]){
       Error |= 1 << 0;
     }
     if (src_str[i] != dst_str_out[i]){
@@ -243,10 +300,10 @@ int8_t test_memcopy(void){
     }
   }
   if (Error == 0){ 
-    PRINTF("Test my_memcopy function pass\n");
+    PRINTF("****************** Test my_memcopy function pass *******************\n");
   }
   else{
-    PRINTF("Test my_memcopy function fail\n");
+    PRINTF("****************** Test my_memcopy function fail *******************\n");
   }
   return (Error);
 }
@@ -254,14 +311,16 @@ int8_t test_memcopy(void){
 int8_t test_memset(void){
   int8_t Error = 0;
   uint8_t * src_str_out;
-  PRINTF("Test my_memset & my_memzero functions\n");
+  int32_t i;
+
+  PRINTF("************** Test my_memset & my_memzero functions ***************\n");
   PRINTF("Source string:\n");
-  src_str_out = my_memset(src_str, str_size, memset_test_value);
+  src_str_out = my_memset(src_str, src_str_size, memset_test_value);
   PRINTF("Source string after memset %d (input parameter):\n", memset_test_value);
-  print_array(src_str, str_size);
+  print_array(src_str, src_str_size);
   PRINTF("Source string after memset %d (output value): \n", memset_test_value);
-  print_array(src_str_out, str_size);
-  for (i = 0; i < str_size; i++){
+  print_array(src_str_out, src_str_size);
+  for (i = 0; i < src_str_size; i++){
     if (src_str[i] != memset_test_value){
       Error |= 1 << 0;
     }
@@ -270,24 +329,24 @@ int8_t test_memset(void){
     }
   }
   PRINTF("Source string:\n");
-  src_str_out = my_memzero(src_str, str_size);
-  PRINTF("Source string after memzero (input parameter):\n", src_str);
-  print_array(src_str, str_size);
-  PRINTF("Source string after memzero (output value):\n", src_str_out);
-  print_array(src_str_out, str_size);
-  for (i = 0; i < str_size; i++){
-    if (src_str1[i] != NULL){
+  src_str_out = my_memzero(src_str, src_str_size);
+  PRINTF("Source string after memzero (input parameter):\n");
+  print_array(src_str, src_str_size);
+  PRINTF("Source string after memzero (output value):\n");
+  print_array(src_str_out, src_str_size);
+  for (i = 0; i < src_str_size; i++){
+    if (src_str[i] != '\0'){
       Error |= 1 << 2;
     }
-    if (src_str2[i] != NULL){
+    if (src_str_out[i] != '\0'){
       Error |= 1 << 3;
     }
   }
   if (Error == 0){ 
-    PRINTF("Test my_memset & my_memzero functions pass\n");
+    PRINTF("************ Test my_memset & my_memzero functions pass ************\n");
   }
   else{
-    PRINTF("Test my_memset & my_memzero functions fail\n");
+    PRINTF("************ Test my_memset & my_memzero functions fail ************\n");
   }
   return (Error);
 }
@@ -296,7 +355,9 @@ int8_t test_reverse(void){
   int8_t Error = 0;
   uint8_t * str_even_out;
   uint8_t * str_odd_out;
-  PRINTF("Test my_reverse function\n");
+  int32_t i;
+
+  PRINTF("********************* Test my_reverse function *********************\n");
   PRINTF("Source string:\n");
   print_array(str_even, str_even_size);
   str_even_out = my_reverse(str_even, str_even_size);
@@ -328,10 +389,10 @@ int8_t test_reverse(void){
     }
   }
   if (Error == 0){ 
-    PRINTF("Test my_reverse function pass\n");
+    PRINTF("****************** Test my_reverse function pass *******************\n");
   }
   else{
-    PRINTF("Test my_reverse function fail\n");
+    PRINTF("****************** Test my_reverse function fail ****************** \n");
   }
   return (Error);
 }

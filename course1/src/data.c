@@ -21,16 +21,13 @@
  */
 #include "data.h"
 
-#define MAX_STRING_LENGTH	32
-
 uint8_t my_itoa(int32_t data, uint8_t * ptr, uint32_t base){
-  char * result_str;
-  int sign=0;
-  int digit;
-  uint8_t length_str = 0;
+  int32_t sign=0;
+  int8_t digit;
+  uint8_t length = 0;
+  uint8_t *start_ptr;
+  uint8_t *end_ptr;
   
-  /* Allocate memory for result string */
-  result_str = (char *)malloc(MAX_STRING_LENGTH*sizeof(char));
   /* Save sign, If negative number */
   if (data < 0) { 
     data = (-1 * data);
@@ -43,89 +40,77 @@ uint8_t my_itoa(int32_t data, uint8_t * ptr, uint32_t base){
     if (digit < 10)
     {
       /* Add ASCII '0', if less 10 */
-      *result_str= digit + '0';
+      *ptr= digit + '0';
     }
     else if (digit < 16)
     {
       /* Add ASCII 'a', if more 10 and less 16 */
-      *result_str = digit - 10 + 'a';
+      *ptr = digit - 10 + 'a';
     }
     /* Increment length_str and result_str pointer */
-    length_str ++;
-    result_str ++;
-    data -= data % 10;
+    length ++;
+    ptr ++;
+    data -= data % base;
   }
   /* Do cycle if number more 0 */
   while ((data /= base) > 0);
 
   if (sign == 1) {
     /* Add minus sign if negative number */
-    *result_str = '-';
+    *ptr = '-';
     /* Increment length_str and result_str pointer */
-    result_str ++;
-    length_str ++;
-  }
-
-  /* Allocate memory for buffer */
-  buf = (char *)malloc(length*sizeof(char));
-  for(i = 0; i < length_str; i++) {
-    /* Copy result_str to buf in reverse order */
-    *buf = *result_str;
-    /* Decrement result_str and increment buf pointers */
-    result_str --;
-    buf ++;
-  }
-  /* Set buf pointer to begin of allocation */
-  buf -= length_str;
-  for(i = 0; i < length_str; i++) {
-    /* Copy data from buffer to ptr */
-    *ptr = *buf;
-    /* Increment pointers */
     ptr ++;
-    buf ++;
+    length ++;
   }
-  /* Add NULL terminator to end of string */
-  *result_str = '\0';
+  /* Add NULL termintor */
   *ptr = '\0';
-  /* Increment length_str and result_str pointer */
-  result_str ++;
-  ptr ++;
-  length_str ++;
-  /* Free memory */
-  free (buf);
-  free (result_str);
+  /* Set pointers for reverse bytes */
+  start_ptr = ptr - length - 1;
+  end_ptr = ptr - 0;
+  /* reverse untill end_ptr > start_ptr */
+  while(end_ptr > start_ptr){
+    /* Save value from left side of array */
+    digit = *start_ptr;
+    /* Move value from rigth side of array to left */
+    *start_ptr++ = *end_ptr;
+    /* Move value from temp to rigth side of array */
+    *end_ptr-- = digit;
+  }
+  /* Set ptr to start offff allocation */
+  ptr -= length - 1;
   /* Return length of string (without NULL termintor) */
-  return (length_str-1);
+  return (length);
 }
 
 int32_t my_atoi(uint8_t * ptr, uint8_t digits, uint32_t base){
-  int sign=0;
-  int current_digit;
+  int32_t sign=0;
+  int32_t current_digit;
   int32_t result_number = 0; 
+  int32_t i;
 
   if (*ptr == '-'){
     /* Save sign, If negative number */
     sign = 1; 
     /* Increment ptr pointer */
     ptr ++;
+    /* Decrement size of array */
+    digits--;
   }
 
   for (i = 0; i < digits; i ++){
-    if (*ptr >= '0' && *ptr >= '9')
+    if (*ptr >= '0' && *ptr <= '9')
     {
       /*  if digit from 0 to 9 */
       current_digit = *ptr - '0';
     }
-    else if (*ptr >= 'a' && *ptr >= 'f')
+    else if (*ptr >= 'a' && *ptr <= 'f')
     {
       /*  if digit from a to f */
-      *result_str = digit + 'a';
       current_digit = 10 + *ptr - 'a';
     } 
-    else if (*ptr >= 'A' && *ptr >= 'F')
+    else if (*ptr >= 'A' && *ptr <= 'F')
     {
       /*  if digit from A t0 F */
-      *result_str = digit + 'a';
       current_digit = 10 + *ptr - 'A';
     }
     /* Calculate number */

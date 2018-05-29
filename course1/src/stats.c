@@ -22,7 +22,6 @@
  *
  */
 
-#include <stdio.h>
 #include "stats.h"
 
 unsigned char find_maximum(unsigned char * ptr, unsigned int size) {
@@ -79,20 +78,20 @@ unsigned char found_mean;
 }
 
 void print_statistics(unsigned char * ptr, unsigned int size) {
-unsigned char maximum_value;
+/*unsigned char maximum_value;
 unsigned char minimum_value;
 unsigned char median_value;
-unsigned char mean_value;
+unsigned char mean_value;*/
 
-  maximum_value = find_maximum(ptr, size); /* find maximum value */
-  minimum_value = find_minimum(ptr, size); /* find minimum value */
-  median_value = find_median(ptr, size); /* find median value */
-  mean_value = find_mean(ptr, size); /* find mean value */
+  //maximum_value = find_maximum(ptr, size); /* find maximum value */
+  //minimum_value = find_minimum(ptr, size); /* find minimum value */
+  //median_value = find_median(ptr, size); /* find median value */
+  //mean_value = find_mean(ptr, size); /* find mean value */
   
-  PRINTF("Maximum array value = %d\n", maximum_value);
-  PRINTF("Minimum array value = %d\n", minimum_value);
-  PRINTF("Median array value = %d\n", median_value);
-  PRINTF("Mean array value = %d\n", mean_value);
+  PRINTF("Maximum array value = %d\n", find_maximum(ptr, size));
+  PRINTF("Minimum array value = %d\n", find_minimum(ptr, size));
+  PRINTF("Median array value = %d\n", find_median(ptr, size));
+  PRINTF("Mean array value = %d\n", find_mean(ptr, size));
 }
 
 void print_array(unsigned char * ptr, unsigned int size) {
