@@ -33,7 +33,7 @@
 #------------------------------------------------------------------------------
 PLATFORM = HOST
 COURSE = COURSE1
-PRINT = NONE
+PRINT = VERBOSE
 include sources.mk
 BASENAME = course1
 
