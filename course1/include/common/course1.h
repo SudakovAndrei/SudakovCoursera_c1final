@@ -27,6 +27,20 @@
 #include "stats.h"
 #include "platform.h"
 
+#define DATA_SET_SIZE_W (10)
+#define MEM_SET_SIZE_B  (32)
+#define MEM_SET_SIZE_W  (8)
+#define MEM_ZERO_LENGTH (16)
+
+#define TEST_MEMMOVE_LENGTH (16)
+#define TEST_ERROR          (1)
+#define TEST_NO_ERROR       (0)
+
+#define TESTCOUNT           (8)
+#define BASE_16 (16)
+#define BASE_8 (8)
+#define BASE_10 (10)
+
 /**
  * @brief Call a handful of functions and test function outputs. 
  *
